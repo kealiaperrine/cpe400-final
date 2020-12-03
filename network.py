@@ -101,14 +101,18 @@ def fail_nodes(graph, fail_probs, num_nodes):
     # parameters: graph, the failure probabilities of each node
     # returns: nothing
 def update_weights(graph, fail_probs):
+    # get average failure probability, will act as our threshold
     avg = statistics.mean(fail_probs)
     avg = round(avg, 3)
-    
-    print(avg, fail_probs)
-    for (fail, (u, v)) in zip(fail_probs, graph.edges()):
-        if fail > avg:
-            print("update", fail)
-            graph.edges[u, v]['weight'] += int(fail*20)
+    #print(avg, fail_probs)
+
+    # if the probability of the node is greater than the average, add more to the weight of the edges of that node
+    for x in range(0, len(fail_probs)):
+        if fail_probs[x] > avg:
+            node_edges = graph.edges(x)
+            print(x, fail_probs[x], node_edges)
+            for edge in node_edges:
+                graph.edges[edge]['weight'] += int(fail_probs[x]*20)
 
 
 # plots and prints the generate graph, use python libraries networkx and matplotlib
@@ -126,17 +130,23 @@ def show_graph(graph, s):
     
 
 def main():
+    # get user input
     num_nodes = get_node_amt()
     src = get_src(num_nodes)
     dest = get_dest(num_nodes)
     fail_probs = get_prob(num_nodes)
 
+    # create random graph
     graph = create_graph(num_nodes)
     print("This is your randomly created graph, before updated weights:")
     show_graph(graph, 'Random Graph')
+
+    # update graph by weighting the edges with the failure probabilities
     update_weights(graph, fail_probs)
     print("This is your randomly created graph, after updated weights and before router failures:")
     show_graph(graph, 'After Updated Weights')
+
+    # fail nodes within the graph (faulty network)
     failed = fail_nodes(graph, fail_probs, num_nodes)
     print("This is your randomly created graph, after router failures:")
     show_graph(graph, 'After Router Failures'),
