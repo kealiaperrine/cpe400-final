@@ -93,7 +93,7 @@ def fail_nodes(graph, fail_probs, num_nodes):
         if fail_probs[x] > threshold and total_fail > len(failed):
             failed.append(x)
 
-    print(total_fail, failed)
+    #print(total_fail, failed)
     graph.remove_nodes_from(failed)
     return failed
 
@@ -110,10 +110,15 @@ def update_weights(graph, fail_probs):
     for x in range(0, len(fail_probs)):
         if fail_probs[x] > avg:
             node_edges = graph.edges(x)
-            print(x, fail_probs[x], node_edges)
+            #print(x, fail_probs[x], node_edges)
             for edge in node_edges:
                 graph.edges[edge]['weight'] += int(fail_probs[x]*20)
 
+def get_dijkstra(graph, src, dest):
+    return nx.dijkstra_path(graph, src, dest)
+
+def get_dijkstra_length(graph, src, dest):
+    return nx.dijkstra_path_length(graph, src, dest)
 
 # plots and prints the generate graph, use python libraries networkx and matplotlib
 # TO-DO: not have to close graph to continue program?
@@ -145,6 +150,12 @@ def main():
     update_weights(graph, fail_probs)
     print("This is your randomly created graph, after updated weights and before router failures:")
     show_graph(graph, 'After Updated Weights')
+
+    # get shortest path using new weights
+    dpath = get_dijkstra(graph, src, dest)
+    dlength = get_dijkstra_length(graph, src, dest)
+    print("The shortest path using the new weights is: ", dpath)
+    print("The length of this path is: ", dlength)
 
     # fail nodes within the graph (faulty network)
     failed = fail_nodes(graph, fail_probs, num_nodes)
