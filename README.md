@@ -34,4 +34,4 @@
 
 - [x] catch - there is no path, sorry
 
-- [ ] continue running until user quits
+- [x] continue running until user quits

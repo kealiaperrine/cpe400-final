@@ -130,11 +130,11 @@ def check_path(dpath, failed_nodes):
             return False
     return True
 
-def pathing(graph, src, dest, dpath, failed):
+def pathing(graph, src, dest, dpath, dlength, failed):
     check = check_path(dpath, failed)
     if check:
         print("\n------------------------------------------------------------------")
-        print("The path after nodes failed is the Dijkstra's path: ", dpath)
+        print("The shortest path after nodes failed is the DIJKSTRA's path: ", dpath)
         print("The length of this path is: ", dlength)
         print("------------------------------------------------------------------")
     else: 
@@ -168,41 +168,45 @@ def show_graph(graph, s):
     
 
 def main():
-    # get user input
-    num_nodes = get_node_amt()
-    src = get_src(num_nodes)
-    dest = get_dest(num_nodes)
-    fail_probs = get_prob(num_nodes)
+    cont = ''
+    while cont != 'q':
+        # get user input
+        num_nodes = get_node_amt()
+        src = get_src(num_nodes)
+        dest = get_dest(num_nodes)
+        fail_probs = get_prob(num_nodes)
 
-    # create random graph
-    graph = create_graph(num_nodes)
-    print("------------------------------------------------------------------")
-    print("This is your randomly created graph, before updated weights:")
-    show_graph(graph, 'Random Graph')
-    print("------------------------------------------------------------------")
+        # create random graph
+        graph = create_graph(num_nodes)
+        print("------------------------------------------------------------------")
+        print("This is your randomly created graph, before updated weights:")
+        show_graph(graph, 'Random Graph')
+        print("------------------------------------------------------------------")
 
-    # update graph by weighting the edges with the failure probabilities
-    updated = update_weights(graph, fail_probs)
-    print("This is your randomly created graph, after updated weights and before router failures:")
-    print("The nodes/routers that had their weights increased are: ", updated)
-    show_graph(graph, 'After Updated Weights')
-    print("------------------------------------------------------------------")
+        # update graph by weighting the edges with the failure probabilities
+        updated = update_weights(graph, fail_probs)
+        print("This is your randomly created graph, after updated weights and before router failures:")
+        print("The nodes/routers that had their weights increased are: ", updated)
+        show_graph(graph, 'After Updated Weights')
+        print("------------------------------------------------------------------")
 
-    # get shortest path using new weights
-    dpath = get_dijkstra(graph, src, dest)
-    dlength = get_dijkstra_length(graph, src, dest)
-    print("The DIJKSTRA's shortest path using the new weights, before nodes fail is: ", dpath)
-    print("The length of this path is: ", dlength)
-    print("------------------------------------------------------------------")
+        # get shortest path using new weights
+        dpath = get_dijkstra(graph, src, dest)
+        dlength = get_dijkstra_length(graph, src, dest)
+        print("The DIJKSTRA's shortest path using the new weights, before nodes fail is: ", dpath)
+        print("The length of this path is: ", dlength)
+        print("------------------------------------------------------------------")
 
-    # fail nodes within the graph (faulty network)
-    failed = fail_nodes(graph, fail_probs, num_nodes)
-    print("This is your randomly created graph, after router failures:")
-    show_graph(graph, 'After Router Failures'),
-    print("The nodes/routers that failed are: ", failed)
-    print("------------------------------------------------------------------")
+        # fail nodes within the graph (faulty network)
+        failed = fail_nodes(graph, fail_probs, num_nodes)
+        print("This is your randomly created graph, after router failures:")
+        show_graph(graph, 'After Router Failures'),
+        print("The nodes/routers that failed are: ", failed)
+        print("------------------------------------------------------------------")
 
-    pathing(graph, src, dest, dpath, failed)
+        pathing(graph, src, dest, dpath, dlength, failed)
+
+        cont = input("Press q to quit, any other key to run again: ")
 
 
 if __name__ == "__main__":
