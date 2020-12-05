@@ -84,7 +84,7 @@ def create_graph(num_nodes):
 def fail_nodes(graph, fail_probs, num_nodes):
     #create threshold for failure value:
     failed = []
-    total_fail = random.randint(0, int(num_nodes*0.8))
+    total_fail = random.randint(0, int(num_nodes*0.75))
     for x in range(0, len(fail_probs)):
         rand = random.uniform(0, 1)
         threshold = round(rand, 3)
@@ -104,15 +104,19 @@ def update_weights(graph, fail_probs):
     # get average failure probability, will act as our threshold
     avg = statistics.mean(fail_probs)
     avg = round(avg, 3)
+    updated = []
     #print(avg, fail_probs)
 
     # if the probability of the node is greater than the average, add more to the weight of the edges of that node
     for x in range(0, len(fail_probs)):
         if fail_probs[x] > avg:
+            updated.append(x)
             node_edges = graph.edges(x)
             #print(x, fail_probs[x], node_edges)
             for edge in node_edges:
                 graph.edges[edge]['weight'] += int(fail_probs[x]*20)
+
+    return updated
 
 def get_dijkstra(graph, src, dest):
     return nx.dijkstra_path(graph, src, dest)
@@ -125,6 +129,29 @@ def check_path(dpath, failed_nodes):
         if f in dpath:
             return False
     return True
+
+def pathing(graph, src, dest, dpath, failed):
+    check = check_path(dpath, failed)
+    if check:
+        print("\n------------------------------------------------------------------")
+        print("The path after nodes failed is the Dijkstra's path: ", dpath)
+        print("The length of this path is: ", dlength)
+        print("------------------------------------------------------------------")
+    else: 
+        print("Dijkstra's path contains a node that failed")
+        print("Recalculating...")
+        try:
+            blength, bpath = get_bellmanford(graph, src, dest)
+            print("------------------------------------------------------------------")
+            print("The BELLMANFORD shortest path is: ", bpath)
+            print("The length of this path is ", blength)
+            print("------------------------------------------------------------------")
+        except:
+            print("Sorry, there is no path between ", src, " and ", dest)
+        
+
+def get_bellmanford(graph, src, dest):
+    return nx.single_source_bellman_ford(graph, src, dest)
 
 # plots and prints the generate graph, use python libraries networkx and matplotlib
 # TO-DO: not have to close graph to continue program?
@@ -155,15 +182,16 @@ def main():
     print("------------------------------------------------------------------")
 
     # update graph by weighting the edges with the failure probabilities
-    update_weights(graph, fail_probs)
+    updated = update_weights(graph, fail_probs)
     print("This is your randomly created graph, after updated weights and before router failures:")
+    print("The nodes/routers that had their weights increased are: ", updated)
     show_graph(graph, 'After Updated Weights')
     print("------------------------------------------------------------------")
 
     # get shortest path using new weights
     dpath = get_dijkstra(graph, src, dest)
     dlength = get_dijkstra_length(graph, src, dest)
-    print("The shortest path using the new weights is: ", dpath)
+    print("The DIJKSTRA's shortest path using the new weights, before nodes fail is: ", dpath)
     print("The length of this path is: ", dlength)
     print("------------------------------------------------------------------")
 
@@ -173,17 +201,8 @@ def main():
     show_graph(graph, 'After Router Failures'),
     print("The nodes/routers that failed are: ", failed)
     print("------------------------------------------------------------------")
-    
-    check = check_path(dpath, failed)
-    if check:
-        print("\n------------------------------------------------------------------")
-        print("The path after nodes failed is the Dijkstra's path: ", dpath)
-        print("The length of this path is: ", dlength)
-        print("------------------------------------------------------------------")
-    else: 
-        print("Dijkstra's path contains a node that failed")
-        print("Recalculating...")
-        print("------------------------------------------------------------------")
+
+    pathing(graph, src, dest, dpath, failed)
 
 
 if __name__ == "__main__":

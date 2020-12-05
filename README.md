@@ -26,12 +26,12 @@
 
 - [x] check if dijkstra path has any failed nodes
 
-- [ ] if no, done!
+- [x] if no, done!
 
-- [ ] if yes:
+- [x] if yes:
 
-- [ ] try - run an algorithm that is more flexible (doesnt know everything from start), print path \*still have to pick one
+- [x] try - run an algorithm that is more flexible (doesnt know everything from start), print path \*still have to pick one
 
-- [ ] catch - there is no path, sorry
+- [x] catch - there is no path, sorry
 
 - [ ] continue running until user quits
