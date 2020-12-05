@@ -24,7 +24,7 @@
 
 - [x] print updated graph
 
-- [ ] check if dijkstra path has any failed nodes
+- [x] check if dijkstra path has any failed nodes
 
 - [ ] if no, done!
 
@@ -33,3 +33,5 @@
 - [ ] try - run an algorithm that is more flexible (doesnt know everything from start), print path \*still have to pick one
 
 - [ ] catch - there is no path, sorry
+
+- [ ] continue running until user quits
