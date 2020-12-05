@@ -12,9 +12,9 @@
 
 - [x] update weights of each edge, based on faultiness of router (pseudo machine learning is my idea)
 
-- [ ] calculate dijkstra path
+- [x] calculate dijkstra path
 
-- [ ] create random int for total possible number of failed nodes
+- [x] create random int for total possible number of failed nodes
 
 - [x] calculated random threshold for head node(0 to 2 less than total nodes)
 
