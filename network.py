@@ -6,7 +6,14 @@ import statistics
 # gets user input for how many nodes/routers are within the network
     # returns: number of nodes (integer)
 def get_node_amt():
-    num_nodes = int(input("Enter the number of nodes/routers in the network: "))
+    good = False
+    while not good:
+        try:
+            good = True
+            num_nodes = int(input("Enter the number of nodes/routers in the network: "))
+        except:
+            print("Please enter a valid integer.")
+            good = False
 
     return num_nodes
 
@@ -238,9 +245,9 @@ def main():
         # fail nodes within the graph (faulty network)
         failed = fail_nodes(graph, fail_probs, num_nodes)
         print("This is your randomly created graph, after router failures:")
-        show_graph(graph, 'After Router Failures'),
         print("The nodes/routers that failed are: ", failed)
         print("------------------------------------------------------------------")
+        show_graph(graph, 'After Router Failures')
 
         # check dijkstra path, possibly calculate bellman ford, check if path actually exists after nodes fail 
         pathing(graph, src, dest, dpath, dlength, failed)
