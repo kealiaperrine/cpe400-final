@@ -53,6 +53,18 @@ For example, after the weights are updating, the nodes with updated weights are 
 
 At the end, it will ask if you want to run the program again. Enter q to quit and any other key to continue.
 
+## Code set up:
+2) the functions and components of the code and how they are connected; 3) the functions and components of the code and their physical significance.
+
+I used python to write this project, and so the program is set up with a main function and functions defined before it to actually do the work for the network simulation.
+
+`get_node_amt()`:
+
+```json
+- Asks for user input for the total amount of nodes in the network, asks until valid input is submitted
+- Significance: gets important info for setting up network
+- Connected: it is called from main and saved into a variable to be used later
+```
 
 ## My checklist while working
 - [x] enter total number of nodes, src, dest
