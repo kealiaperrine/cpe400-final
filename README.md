@@ -73,8 +73,8 @@ I used python to write this project, and so the program is set up with a main fu
 ```json
 - Asks for user input for the source node in the network, asks until valid input is submitted
 - Significance: gets important info for completing search algorithm
-- Connectetions: it is called from main and saved into a variable to be used later
-  uses the number of nodes we just inputted
+- Connectetions: called from main and saved into a variable to be used later,
+    uses the number of nodes we just inputted
 ```
 
 `get_dest(num_nodes)`:
@@ -83,7 +83,7 @@ I used python to write this project, and so the program is set up with a main fu
 - Asks for user input for the destination node in the network, asks until valid input is submitted
 - Significance: gets important info for completing search algorithm
 - Connectetions: it is called from main and saved into a variable to be used later, 
-  uses the number of nodes we just inputted
+    uses the number of nodes we just inputted
 ```
 
 `get_prob(num_nodes)`:
@@ -92,7 +92,7 @@ I used python to write this project, and so the program is set up with a main fu
 - Asks for user input for the probablitity of each node to fail, asks until valid input is submitted
 - Significance: gets important info for updating the weights as well as updating the faulty network
 - Connectetions: it is called from main and saved into a list to be used later, 
-  uses the number of nodes we just inputted to know how many probabilities to obtain from user
+    uses the number of nodes we just inputted to know how many probabilities to obtain from user
 ```
 
 ## My checklist while working
