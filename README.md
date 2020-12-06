@@ -1,5 +1,7 @@
 # CPE 400 Final Project - Faulty Network
 
+## This acts as README for github as well as Code Explaination document
+
 ## Idea
 My network uses a psuedo-machine learning idea. If a node/router is very unreliable, the paths to that node get an increased weight.
 After updating the weights, Dijkstra's path is found. This is novel because you would not usually use a more global algorithm like Dijkstra's for a nonstable network.
@@ -12,7 +14,7 @@ However, from my own testing of the algorithm it's not likely that Bellman's is 
 The reason this is psuedo-machine learning is because instead of a user entering the probabilities, a network could learn the probabilities of each node over time, adjusting each iteration if the router failed or succeeded. However, for the scope of this project, and per the project instructions, the probabilities are user input and that is what is used to update the weights of the paths.
 
 
-## Instructions
+## Instructions to run
 To complete this project I used Python 3.9.0, thus that is the python version I suggest, but any python 3 would work.
 
 Python dependencies:
@@ -63,8 +65,25 @@ I used python to write this project, and so the program is set up with a main fu
 ```json
 - Asks for user input for the total amount of nodes in the network, asks until valid input is submitted
 - Significance: gets important info for setting up network
-- Connected: it is called from main and saved into a variable to be used later
+- Connectetions: it is called from main and saved into a variable to be used later
 ```
+
+`get_src(num_nodes)`:
+
+```json
+- Asks for user input for the source node in the network, asks until valid input is submitted
+- Significance: gets important info for completing search algorithm
+- Connectetions: it is called from main and saved into a variable to be used later, uses the number of nodes we just inputted
+```
+
+`get_src(num_nodes)`:
+
+```json
+- Asks for user input for the source node in the network, asks until valid input is submitted
+- Significance: gets important info for completing search algorithm
+- Connectetions: it is called from main and saved into a variable to be used later, uses the number of nodes we just inputted
+```
+
 
 ## My checklist while working
 - [x] enter total number of nodes, src, dest
