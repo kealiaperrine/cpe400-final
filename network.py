@@ -15,11 +15,17 @@ def get_node_amt():
     # returns: number of the src node (integer)
 def get_src(num_nodes):
     src = -1
-    src = int(input("Enter src node (0 to number of nodes-1): "))
+    try:
+        src = int(input("Enter src node (0 to number of nodes-1): "))
+    except:
+        print("Please enter a valid integer.")
 
     # if user inputs invalid src node, request until valid
     while src < 0 or src > (num_nodes - 1):
-        src = int(input("Invalid src node. Enter src node (0 to number of nodes-1): "))
+        try:
+            src = int(input("Invalid src node. Enter src node (0 to number of nodes-1): "))
+        except:
+            print("Please enter a valid integer.")
 
     return src
 
@@ -28,11 +34,17 @@ def get_src(num_nodes):
     # returns number of the dest node (integer)
 def get_dest(num_nodes):
     dest = -1
-    dest = int(input("Enter dest node (0 to number of nodes-1): "))
+    try:
+        dest = int(input("Enter dest node (0 to number of nodes-1): "))
+    except:
+        print("Please enter a valid integer.")
 
     # if user inputs invalid dest node, request until valid
     while dest < 0 or dest > (num_nodes - 1):
-        dest = int(input("Invalid dest node. Enter dest node (0 to number of nodes-1): "))
+        try:
+            dest = int(input("Invalid dest node. Enter dest node (0 to number of nodes-1): "))
+        except:
+            print("Please enter a valid integer.")
 
     return dest    
 
@@ -44,11 +56,17 @@ def get_prob(num_nodes):
 
     for x in range (0, num_nodes):
         prob = -1
-        prob = float(input("Enter probability of node " + str(x) + " to fail (0-1): "))
+        try:
+            prob = float(input("Enter probability of node " + str(x) + " to fail (0-1): "))
+        except:
+            print("Please enter a valid float.")
 
         # if user inputs invalid probability, request until valid
         while prob <= 0 or prob >= 1:
-            prob = float(input("Invalid probability. Reenter probability of node " + str(x) + " to fail (0-1): "))
+            try:
+                prob = float(input("Invalid probability. Reenter probability of node " + str(x) + " to fail (0-1): "))
+            except:
+                print("Please enter a valid float.")
 
         fail_probs.append(prob)
 
@@ -81,10 +99,16 @@ def create_graph(num_nodes):
 
     return graph
 
+# fails node within the graph ie faulty network
+    # parameters: graph, the probability of each node to fail, the total number of nodes
+    # returns: the list of nodes that failed
 def fail_nodes(graph, fail_probs, num_nodes):
-    #create threshold for failure value:
     failed = []
+    # create a max amount of nodes that is able to fail (so no empty graph possible)
     total_fail = random.randint(0, int(num_nodes*0.75))
+
+    # for each node, create a random threshold
+    #  if the probability of that node is greater than that threshold, it fails
     for x in range(0, len(fail_probs)):
         rand = random.uniform(0, 1)
         threshold = round(rand, 3)
@@ -93,7 +117,6 @@ def fail_nodes(graph, fail_probs, num_nodes):
         if fail_probs[x] > threshold and total_fail > len(failed):
             failed.append(x)
 
-    #print(total_fail, failed)
     graph.remove_nodes_from(failed)
     return failed
 
@@ -118,18 +141,30 @@ def update_weights(graph, fail_probs):
 
     return updated
 
+# calculates the Dijkstra path on the graph with updated weights
+    # parameters: networkx graph, source node, destination node
+    # returns : Dijkstra path
 def get_dijkstra(graph, src, dest):
     return nx.dijkstra_path(graph, src, dest)
 
+# calculates the length of the Dijkstra's path using the graph's weights
+    # parameters : networkx graph, source node, destination node
+    # returns : the length of the path
 def get_dijkstra_length(graph, src, dest):
     return nx.dijkstra_path_length(graph, src, dest)
 
+# checks if the path has any nodes that failed
+    # parameters : dpath (list that is the Dijkstra path), failed_nodes (list that is the nodes that failed)
+    # returns : True if the dpath has no failed nodes, False if dpath contains a failed node
 def check_path(dpath, failed_nodes):
     for f in failed_nodes:
         if f in dpath:
             return False
     return True
 
+# checks the Dijkstra path, computes the bellman ford path if the dpath has a failed node within it
+    # parameters : graph, source node, destination node, the Dijkstra path, the length of that path, the list of failed nodes
+    # returns : nothing
 def pathing(graph, src, dest, dpath, dlength, failed):
     check = check_path(dpath, failed)
     if check:
@@ -149,7 +184,9 @@ def pathing(graph, src, dest, dpath, dlength, failed):
         except:
             print("Sorry, there is no path between ", src, " and ", dest)
         
-
+# calculates the shortest path using bellman ford algorithm
+    # parameters : graph , source node, destination node
+    # returns : bellman ford path (list of nodes)
 def get_bellmanford(graph, src, dest):
     return nx.single_source_bellman_ford(graph, src, dest)
 
@@ -169,6 +206,7 @@ def show_graph(graph, s):
 
 def main():
     cont = ''
+    # loop program unitl user quits
     while cont != 'q':
         # get user input
         num_nodes = get_node_amt()
