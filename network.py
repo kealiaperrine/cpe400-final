@@ -242,8 +242,10 @@ def main():
         print("The nodes/routers that failed are: ", failed)
         print("------------------------------------------------------------------")
 
+        # check dijkstra path, possibly calculate bellman ford, check if path actually exists after nodes fail 
         pathing(graph, src, dest, dpath, dlength, failed)
 
+        # ask user if they want to run it again
         cont = input("Press q to quit, any other key to run again: ")
 
 
