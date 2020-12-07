@@ -199,6 +199,14 @@ I used python to write this project, and so the program is set up with a main fu
             must close graph pop up before continuing program
 ```
 
+`main()`:
+
+```json
+- runs the whole simulation, loops until user chooses to quit
+- Significance: allows for the simulation to occur, calls all other functions that actually do the work
+- Connections: calls almost all the other functions, besides various utility functions that the functions themselves call
+```
+
 ## My checklist while working
 - [x] enter total number of nodes, src, dest
 
