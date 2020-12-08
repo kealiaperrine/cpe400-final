@@ -176,7 +176,7 @@ def pathing(graph, src, dest, dpath, dlength, failed):
     check = check_path(dpath, failed)
     if check:
         print("\n------------------------------------------------------------------")
-        print("The shortest path after nodes failed is the DIJKSTRA's path: ", dpath)
+        print("The path after nodes failed is the DIJKSTRA's path: ", dpath)
         print("The length of this path is: ", dlength)
         print("------------------------------------------------------------------")
     else: 
@@ -236,21 +236,29 @@ def main():
         print("------------------------------------------------------------------")
 
         # get shortest path using new weights
-        dpath = get_dijkstra(graph, src, dest)
-        dlength = get_dijkstra_length(graph, src, dest)
-        print("The DIJKSTRA's shortest path using the new weights, before nodes fail is: ", dpath)
-        print("The length of this path is: ", dlength)
-        print("------------------------------------------------------------------")
+        error = True
+        try:
+            dpath = get_dijkstra(graph, src, dest)
+            error = False
+        except:
+            print("Sorry, there is no path between ", src, " and ", dest, " even before nodes fail.")
+            error = True
 
-        # fail nodes within the graph (faulty network)
-        failed = fail_nodes(graph, fail_probs, num_nodes)
-        print("This is your randomly created graph, after router failures:")
-        print("The nodes/routers that failed are: ", failed)
-        print("------------------------------------------------------------------")
-        show_graph(graph, 'After Router Failures')
+        if error == False:
+            dlength = get_dijkstra_length(graph, src, dest)
+            print("The DIJKSTRA's shortest path using the new weights, before nodes fail is: ", dpath)
+            print("The length of this path is: ", dlength)
+            print("------------------------------------------------------------------")
 
-        # check dijkstra path, possibly calculate bellman ford, check if path actually exists after nodes fail 
-        pathing(graph, src, dest, dpath, dlength, failed)
+            # fail nodes within the graph (faulty network)
+            failed = fail_nodes(graph, fail_probs, num_nodes)
+            print("This is your randomly created graph, after router failures:")
+            print("The nodes/routers that failed are: ", failed)
+            print("------------------------------------------------------------------")
+            show_graph(graph, 'After Router Failures')
+
+            # check dijkstra path, possibly calculate bellman ford, check if path actually exists after nodes fail 
+            pathing(graph, src, dest, dpath, dlength, failed)
 
         # ask user if they want to run it again
         cont = input("Press q to quit, any other key to run again: ")
